@@ -1,0 +1,25 @@
+[
+  {
+    "title": "Progetto Fighissimo",
+    "subtitle": "UX, Front-end Development",
+    "description": "A cutting-edge platform blending interactivity and design.",
+    "image": "/assets/images/vev/vev_thumb.png",
+    "expertises": ["UX", "Frontend", "Motion", "Creative Dev"],
+    "gallery": [
+      { "src": "/assets/images/vev/vev_thumb.png", "cols": 6 },
+      { "src": "/assets/images/vev/vev_thumb.png", "cols": 6 },
+      { "src": "/assets/images/vev/vev_thumb.png", "cols": 12 }
+    ]
+  },
+  {
+    "title": "Altra Cosa",
+    "subtitle": "Branding, UI",
+    "description": "Visual identity for a future-focused brand.",
+    "image": "/assets/images/works/altracosa-cover.jpg",
+    "expertises": ["Branding", "UI Design"],
+    "gallery": [
+      { "src": "/assets/images/works/altracosa-1.jpg", "cols": 6 },
+      { "src": "/assets/images/works/altracosa-2.jpg", "cols": 6 }
+    ]
+  }
+]
