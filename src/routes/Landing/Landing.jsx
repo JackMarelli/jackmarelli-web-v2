@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import BaseLayout from "../../layouts/BaseLayout/BaseLayout";
 import GridLayout from "../../layouts/GridLayout/GridLayout";
 
-import selfImg from "../../assets/images/0.jpg";
+import selfImg from "../../assets/media/0.jpg";
 import works from "../../data/works.json";
 
 export default function Landing() {
@@ -33,6 +33,38 @@ export default function Landing() {
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
+  // Helper function to determine if a file is a video
+  const isVideo = (src) => {
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+    return videoExtensions.some(ext => src.toLowerCase().includes(ext));
+  };
+
+  // Helper function to render media (image or video)
+  const renderMedia = (src, alt, className) => {
+    if (isVideo(src)) {
+      return (
+        <video
+          src={src}
+          className={className}
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else {
+      return (
+        <img
+          src={src}
+          alt={alt}
+          className={className}
+        />
+      );
+    }
+  };
+
   return (
     <BaseLayout>
       <GridLayout>
@@ -53,7 +85,11 @@ export default function Landing() {
         <div className="col-span-3 flex items-end pb-4">Milan, {milanTime}</div>
 
         <div className="col-span-3 col-start-7 h-[10vh] flex items-end text-lg pb-4">
-          Delivering Deliveries like a Deliveroo ABC123GM
+          Currently working at{" "}
+          <a className="ps-1" href="https://www.quantum-studio.it/">
+            {" "}
+            QUANTUM STUDIO
+          </a>
         </div>
         <div className="col-span-3 h-[10vh] flex items-end justify-end text-lg pb-4 animate-blink">
           Scroll
@@ -69,9 +105,9 @@ export default function Landing() {
           <Link to="/about">Read all</Link>
         </div>
         <div className="col-span-full text-7xl font-serif indent-[calc(100%/4)] mt-32 tracking-tight text-gray-900">
-          I’m Giacomo, a creative developer based near Milan. My work spans
+          I'm Giacomo, a creative developer based near Milan. My work spans
           between websites, UI/UX, branding, graphic design, prototyping,
-          audiovisual and interactive installations <br />
+          audiovisual and interactive installations. <br />
           <br />
           Moving between design and code, concept and execution. Design and code
           are only tools of expression — shaping digital experiences that are
@@ -79,14 +115,20 @@ export default function Landing() {
         </div>
       </GridLayout>
       <GridLayout className="pt-64">
+        <div className="col-span-3 uppercase text-2xl">Works</div>
+        <div className="col-span-3 col-start-10 flex justify-end uppercase text-2xl underline">
+          <Link to="/about">See all</Link>
+        </div>
         {projects.map((project, index) => (
           <div key={index} className="col-span-4 flex flex-col gap-4">
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full rounded object-contain"
-              />
+            {project.cover ? (
+              <div className="w-full rounded overflow-hidden">
+                {renderMedia(
+                  project.cover,
+                  project.title,
+                  "w-full object-contain"
+                )}
+              </div>
             ) : (
               <div className="w-full aspect-[4/3] bg-gray-200 rounded" />
             )}
