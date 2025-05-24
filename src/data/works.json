@@ -1,10 +1,20 @@
 [
   {
-    "title": "Vev Project",
+    "title": "Personal Brand",
+    "subtitle": "Moboli",
+    "description": "Personal brand identity and visual system.",
+    "cover": "/assets/media/jackmarelli/logo_spin.mp4",
+    "expertises": ["UX", "Front-end Dev"],
+    "gallery": [
+      { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
+    ]
+  },
+  {
+    "title": "Vev Clean & Gardening",
     "subtitle": "UX, Front-end Development",
     "description": "A cutting-edge platform blending interactivity and design.",
     "cover": "/assets/media/vev/vev_thumb.png",
-    "expertises": ["UX", "Frontend", "Motion", "Creative Dev"],
+    "expertises": ["Website Creation"],
     "gallery": [
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
@@ -15,7 +25,7 @@
     "title": "Domu",
     "subtitle": "Condo Management",
     "description": "Visual identity and interface design for residential project.",
-    "cover": "/assets/media/domu/domu_cover_storto.mp4",
+    "cover": "/assets/media/domu/domuCover2.png",
     "expertises": ["Branding", "UI Design", "Frontend Dev"],
     "gallery": [
       { "src": "/assets/media/domu/domu1.png", "cols": 6, "type": "image" },
@@ -27,24 +37,13 @@
     ]
   },
   {
-    "title": "Jackmarelli Brand",
-    "subtitle": "Personal Branding",
+    "title": "MisuraEmme Mobili",
+    "subtitle": "Moboli",
     "description": "Personal brand identity and visual system.",
-    "cover": "/assets/media/jackmarelli/someimage.jpg",
-    "expertises": ["Branding", "Visual Identity"],
+    "cover": "/assets/media/misuraemme/misuraemme.mp4",
+    "expertises": ["UX", "Front-end Dev"],
     "gallery": [
       { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
-    ]
-  },
-  {
-    "title": "Music Matcher",
-    "subtitle": "UI/UX, Frontend Development",
-    "description": "Interactive music discovery application.",
-    "cover": "/assets/media/musicmatcher/preview.jpg",
-    "expertises": ["UI/UX", "Frontend", "Interactive"],
-    "gallery": [
-      { "src": "/assets/media/musicmatcher/interface.jpg", "cols": 8, "type": "image" },
-      { "src": "/assets/media/musicmatcher/mobile.jpg", "cols": 4, "type": "image" }
     ]
   }
 ]
