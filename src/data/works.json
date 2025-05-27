@@ -4,22 +4,24 @@
     "subtitle": "Moboli",
     "description": "Personal brand identity and visual system.",
     "cover": "/assets/media/jackmarelli/logo_spin.mp4",
-    "expertises": ["UX", "Front-end Dev"],
+    "expertises": ["Brand Identity"],
     "gallery": [
       { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
-    ]
+    ],
+    "url": "/work/personal-brand"
   },
   {
-    "title": "Vev Clean & Gardening",
-    "subtitle": "UX, Front-end Development",
+    "title": "50 Sfumature di Pinot Noir",
+    "subtitle": "Logo Design",
     "description": "A cutting-edge platform blending interactivity and design.",
-    "cover": "/assets/media/vev/vev_thumb.png",
-    "expertises": ["Website Creation"],
+    "cover": "/assets/media/_50sfumaturedipinotnoir/square_colored.jpg",
+    "expertises": ["Logo Design"],
     "gallery": [
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
-    ]
+    ],
+    "url": "/work/50-sfumature-di-pinot-noir"
   },
   {
     "title": "Domu",
@@ -34,7 +36,34 @@
       { "src": "/assets/media/domu/domu4.png", "cols": 4, "type": "image" },
       { "src": "/assets/media/domu/domu5.png", "cols": 4, "type": "image" },
       { "src": "/assets/media/domu/domu6.png", "cols": 12, "type": "image" }
-    ]
+    ],
+    "url": "/work/domu"
+  },
+  {
+    "title": "Made in Bergamo",
+    "subtitle": "UX, Front-end Development",
+    "description": "A cutting-edge platform blending interactivity and design.",
+    "cover": "/assets/media/madeinbergamo/03.jpg",
+    "expertises": ["Website Creation"],
+    "gallery": [
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+    ],
+    "url": "/work/made-in-bergamo"
+  },
+  {
+    "title": "Riflessioni Programmate",
+    "subtitle": "UX, Front-end Development",
+    "description": "A cutting-edge platform blending interactivity and design.",
+    "cover": "/assets/media/riflessioniprogrammate/flyer.png",
+    "expertises": ["Interactive Installation"],
+    "gallery": [
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+    ],
+    "url": "/work/riflessioni-programmate"
   },
   {
     "title": "MisuraEmme Mobili",
@@ -44,6 +73,20 @@
     "expertises": ["UX", "Front-end Dev"],
     "gallery": [
       { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
-    ]
+    ],
+    "url": "/work/misuraemme-mobili"
+  },
+  {
+    "title": "Vev Clean & Gardening",
+    "subtitle": "UX, Front-end Development",
+    "description": "A cutting-edge platform blending interactivity and design.",
+    "cover": "/assets/media/vev/vev_thumb.png",
+    "expertises": ["Website Creation"],
+    "gallery": [
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+    ],
+    "url": "/work/vev-clean-and-gardening"
   }
 ]

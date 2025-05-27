@@ -7,6 +7,11 @@
   padding: 0;
 }
 
+::selection {
+  color: white;
+  background: #000000;
+}
+
 @font-face {
   font-family: "Ancizar";
   src: url("../src/assets/fonts/AncizarSerif-VariableFont_wght.ttf")

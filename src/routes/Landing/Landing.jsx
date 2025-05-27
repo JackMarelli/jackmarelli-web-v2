@@ -84,12 +84,14 @@ export default function Landing() {
           thoughtful, expressive, and alive.
         </div>
       </GridLayout>
-      <GridLayout className="pt-64">
+      <GridLayout className="pt-64 pb-4">
         <div className="col-span-3 uppercase text-2xl">Works</div>
         <div className="col-span-3 col-start-10 flex justify-end uppercase text-2xl underline">
           <Link to="/about">See all</Link>
         </div>
-        {projects.slice(0, 3).map((project, index) => (
+      </GridLayout>
+      <GridLayout className="gap-y-32">
+        {projects.slice(0, 6).map((project, index) => (
           <Work key={index} project={project} index={index} />
         ))}
       </GridLayout>

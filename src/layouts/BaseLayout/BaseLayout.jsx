@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 
 import Lenis from "lenis";
 
@@ -8,9 +9,10 @@ export default function BaseLayout({ children }) {
   });
 
   return (
-    <div className="w-full h-fit min-h-screen font-medium">
+    <div className="w-full h-fit min-h-screen font-medium overflow-x-hidden">
       <Navbar />
       <div className="w-full h-fit">{children}</div>
+      <Footer />
     </div>
   );
 }
