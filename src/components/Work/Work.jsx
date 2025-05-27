@@ -9,8 +9,6 @@ const Work = ({ project, index }) => {
 
   // Helper function to render media (image or video)
   const renderMedia = (src, alt, className) => {
-    console.log("rendering ", project.title);
-
     if (isVideo(src)) {
       return (
         <video src={src} className={className} autoPlay loop muted playsInline>
