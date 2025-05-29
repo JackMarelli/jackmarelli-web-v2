@@ -1,5 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import * as THREE from "three";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import BaseLayout from "../../layouts/BaseLayout/BaseLayout";
 import GridLayout from "../../layouts/GridLayout/GridLayout";
@@ -12,16 +14,208 @@ import works from "../../data/works.json";
 export default function Landing() {
   const [milanTime, setMilanTime] = useState("");
   const [projects, setProjects] = useState([]);
-  const [momentumDivs, setMomentumDivs] = useState([]);
-
-  const lastPositionRef = useRef({ x: 0, y: 0 });
-  const totalDistanceRef = useRef(0);
-  const lastTimeRef = useRef(Date.now());
-  const velocityRef = useRef({ x: 0, y: 0 });
-  const divIdRef = useRef(0);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  
+  // Three.js refs
+  const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const rendererRef = useRef(null);
+  const frameRef = useRef(null);
+  const modelRef = useRef(null); // Changed from cubeRef to modelRef
+  const cameraRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     setProjects(works);
+  }, []);
+
+  // Three.js Scene Setup
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    // Clear any existing content first
+    while (mountRef.current.firstChild) {
+      mountRef.current.removeChild(mountRef.current.firstChild);
+    }
+
+    // Get container dimensions FIRST
+    const containerRect = mountRef.current.getBoundingClientRect();
+    const containerWidth = mountRef.current.offsetWidth;
+    const containerHeight = mountRef.current.offsetHeight;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      containerWidth / containerHeight,
+      0.1,
+      1000
+    );
+
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(containerWidth, containerHeight);
+    renderer.setClearColor(0x000000, 0); // Transparent background
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.pointerEvents = 'none';
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Load glTF model
+    const loader = new GLTFLoader();
+    loader.load(
+      '/assets/models/mustache1.glTF', // Replace with your glTF file path
+      (gltf) => {
+        const model = gltf.scene;
+        
+        // Optional: Scale the model if needed
+        model.scale.setScalar(1); // Adjust scale as needed
+        
+        // Optional: Center the model
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        
+        // Optional: Adjust model material properties
+        model.traverse((child) => {
+          if (child.isMesh) {
+            // Make materials slightly transparent if desired
+            if (child.material) {
+              child.material.transparent = true;
+              child.material.opacity = 0.9;
+            }
+          }
+        });
+        
+        scene.add(model);
+        modelRef.current = model;
+        setModelLoaded(true);
+      },
+      (progress) => {
+        console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%');
+      },
+      (error) => {
+        console.error('Error loading glTF model:', error);
+        // Fallback: create a simple cube if model fails to load
+        const geometry = new THREE.BoxGeometry(3, 3, 3);
+        const material = new THREE.MeshLambertMaterial({ 
+          color: 0x0000FF,
+          transparent: true,
+          opacity: 0.8 
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        modelRef.current = cube;
+        setModelLoaded(true);
+      }
+    );
+
+    // Add ambient light (increased for better visibility)
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
+    scene.add(ambientLight);
+
+    // Add multiple directional lights for better model visibility
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight1.position.set(5, 5, 5);
+    scene.add(directionalLight1);
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+    directionalLight2.position.set(-5, -5, 5);
+    scene.add(directionalLight2);
+
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.3);
+    directionalLight3.position.set(0, 0, -5);
+    scene.add(directionalLight3);
+
+    // Position camera further back for better view
+    camera.position.z = 7;
+
+    // Store refs
+    sceneRef.current = scene;
+    rendererRef.current = renderer;
+    cameraRef.current = camera;
+
+    // Mouse move handler for model rotation
+    const handleMouseMove = (event) => {
+      const rect = mountRef.current.getBoundingClientRect();
+      
+      if (event.clientX >= rect.left && event.clientX <= rect.right && 
+          event.clientY >= rect.top && event.clientY <= rect.bottom) {
+        mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      }
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Animation loop
+    const animate = () => {
+      if (!modelRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
+      
+      const model = modelRef.current;
+      
+      // Calculate target rotation based on mouse position
+      const targetRotationX = -mouseRef.current.y * Math.PI;
+      const targetRotationY = mouseRef.current.x * Math.PI;
+      
+      // Calculate target position based on mouse position
+      const targetPositionX = mouseRef.current.x * 3;
+      const targetPositionY = mouseRef.current.y * 2;
+      
+      // Smooth interpolation for natural movement
+      model.rotation.x += (targetRotationX - model.rotation.x) * 0.08;
+      model.rotation.y += (targetRotationY - model.rotation.y) * 0.08;
+      
+      model.position.x += (targetPositionX - model.position.x) * 0.05;
+      model.position.y += (targetPositionY - model.position.y) * 0.05;
+      
+      // Add subtle continuous rotation
+      model.rotation.x += 0.001;
+      model.rotation.y += 0.001;
+      model.rotation.z += 0.0005;
+
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
+      frameRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Handle window resize
+    const handleResize = () => {
+      if (!cameraRef.current || !rendererRef.current || !mountRef.current) return;
+      
+      const containerWidth = mountRef.current.offsetWidth;
+      const containerHeight = mountRef.current.offsetHeight;
+      
+      cameraRef.current.aspect = containerWidth / containerHeight;
+      cameraRef.current.updateProjectionMatrix();
+      rendererRef.current.setSize(containerWidth, containerHeight);
+      
+      rendererRef.current.domElement.style.width = '100%';
+      rendererRef.current.domElement.style.height = '100%';
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('mousemove', handleMouseMove);
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+      
+      if (mountRef.current) {
+        while (mountRef.current.firstChild) {
+          mountRef.current.removeChild(mountRef.current.firstChild);
+        }
+      }
+      
+      if (renderer) {
+        renderer.dispose();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -36,194 +230,42 @@ export default function Landing() {
       setMilanTime(formatter.format(now));
     };
 
-    updateTime(); // initialize immediately
-    const interval = setInterval(updateTime, 1000); // update every second
-
-    return () => clearInterval(interval); // cleanup on unmount
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
-
-  const createMomentumDiv = (x, y, velocityX, velocityY) => {
-    const id = divIdRef.current++;
-    const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-    const normalizedVelX = velocityX * Math.min(speed / 5, 10); // Scale and cap velocity
-    const normalizedVelY = velocityY * Math.min(speed / 5, 10);
-
-    const newDiv = {
-      id,
-      x,
-      y,
-      velocityX: normalizedVelX,
-      velocityY: normalizedVelY,
-      opacity: 1,
-      scale: 1,
-    };
-
-    setMomentumDivs((prev) => [...prev, newDiv]);
-
-    // Animate the div
-    let startTime = Date.now();
-    const movementDuration = 300; // milliseconds of movement
-    const fadeDuration = 100; // millisecondsa of fade
-    const totalDuration = movementDuration + fadeDuration; // 3 seconds total
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-
-      if (elapsed >= totalDuration) {
-        // Remove the div after total animation
-        setMomentumDivs((prev) => prev.filter((div) => div.id !== id));
-        return;
-      }
-
-      let opacity = 1;
-      let movementProgress = Math.min(elapsed / movementDuration, 1);
-
-      // Only start fading after movement duration (2000ms)
-      if (elapsed > movementDuration) {
-        const fadeProgress = (elapsed - movementDuration) / fadeDuration;
-        opacity = 1 - fadeProgress;
-      }
-
-      // Momentum decreases over time but never goes negative (no pullback)
-      const easeOutQuad = (t) => t * (2 - t); // Decelerates to 0
-      const easedProgress = easeOutQuad(movementProgress);
-      const throwSensitivity = 90; // Higher = longer throw, Lower = shorter throw
-
-      const maxVelocity = 1.5; // pixels/ms
-      const clampedVelocityX = Math.max(
-        Math.min(velocityX, maxVelocity),
-        -maxVelocity
-      );
-      const clampedVelocityY = Math.max(
-        Math.min(velocityY, maxVelocity),
-        -maxVelocity
-      );
-
-      // Then normalize those
-      const speed = Math.sqrt(clampedVelocityX ** 2 + clampedVelocityY ** 2);
-      const normalizedVelX = clampedVelocityX * Math.min(speed / 5, 10);
-      const normalizedVelY = clampedVelocityY * Math.min(speed / 5, 10);
-
-      setMomentumDivs((prev) =>
-        prev.map((div) => {
-          if (div.id === id) {
-            return {
-              ...div,
-              x: x + normalizedVelX * easedProgress * throwSensitivity,
-              y: y + normalizedVelY * easedProgress * throwSensitivity,
-              opacity: opacity,
-              scale: 1,
-            };
-          }
-          return div;
-        })
-      );
-
-      requestAnimationFrame(animate);
-    };
-
-    requestAnimationFrame(animate);
-  };
-
-  const handleMouseMove = (e) => {
-    const currentX = e.clientX;
-    const currentY = e.clientY;
-    const currentTime = Date.now();
-
-    // Calculate distance from last position
-    const deltaX = currentX - lastPositionRef.current.x;
-    const deltaY = currentY - lastPositionRef.current.y;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-    // Calculate velocity (pixels per millisecond)
-    const deltaTime = currentTime - lastTimeRef.current;
-    if (deltaTime > 0) {
-      velocityRef.current = {
-        x: deltaX / deltaTime,
-        y: deltaY / deltaTime,
-      };
-    }
-
-    // Add to total distance
-    totalDistanceRef.current += distance;
-
-    // Check if we've traveled 100px or more
-    if (totalDistanceRef.current >= 100) {
-      console.log(
-        `Mouse traveled 100px! Total distance: ${totalDistanceRef.current.toFixed(
-          2
-        )}px`
-      );
-
-      // Create momentum div with current velocity
-      createMomentumDiv(
-        currentX,
-        currentY,
-        velocityRef.current.x,
-        velocityRef.current.y
-      );
-
-      totalDistanceRef.current = 0; // Reset counter
-    }
-
-    // Update last position and time
-    lastPositionRef.current = { x: currentX, y: currentY };
-    lastTimeRef.current = currentTime;
-  };
-
-  const handleMouseEnter = (e) => {
-    // Initialize position when mouse enters the div
-    lastPositionRef.current = { x: e.clientX, y: e.clientY };
-    lastTimeRef.current = Date.now();
-    totalDistanceRef.current = 0;
-    velocityRef.current = { x: 0, y: 0 };
-  };
 
   return (
     <BaseLayout>
-      <div
-        className="absolute w-full h-screen top-0 z-10 overflow-hiddena"
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-      >
-        {/* Render momentum divs */}
-        {momentumDivs.map((div) => (
-          <div
-            key={div.id}
-            className="absolute w-64 h-64 pointer-events-none z-20 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: div.x - 24,
-              top: div.y - 24,
-              opacity: div.opacity,
-              transition: "none",
-            }}
-          >
-            <img
-              src={selfImg}
-              alt="momentum"
-              className="w-full h-full object-cover"
-            />
+      {/* Hero Section with Three.js Model */}
+      <div className="relative">
+        {/* Three.js Canvas Container */}
+        <div 
+          ref={mountRef}
+          className="absolute top-0 left-0 w-full h-full pointer-events-none z-[1]"
+          style={{ 
+            mixBlendMode: 'normal',
+          }}
+        />
+        
+        <GridLayout className="relative z-10">
+          <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
+            Creative
           </div>
-        ))}
+          <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
+            Web
+          </div>
+          <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
+            Front-End
+          </div>
+          <div className="col-span-3 flex items-center justify-end h-[90vh] font-serif text-7xl">
+            Developer
+          </div>
+        </GridLayout>
       </div>
-
-      <GridLayout>
-        <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
-          Creative
-        </div>
-        <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
-          Web
-        </div>
-        <div className="col-span-3 flex items-center h-[90vh] font-serif text-7xl">
-          Front-End
-        </div>
-        <div className="col-span-3 flex items-center justify-end h-[90vh] font-serif text-7xl">
-          Developer
-        </div>
-      </GridLayout>
+      
       <GridLayout>
         <div className="col-span-3 flex items-end pb-4">Milan, {milanTime}</div>
-
         <div className="col-span-3 col-start-7 h-[10vh] flex items-end text-lg pb-4">
           Currently working at{" "}
           <a className="ps-1" href="https://www.quantum-studio.it/">
@@ -235,6 +277,7 @@ export default function Landing() {
           Scroll
         </div>
       </GridLayout>
+      
       <GridLayout className="pt-8">
         <hr className="col-span-full border-t-2 border-black pb-8" />
         <div className="col-span-3 uppercase text-2xl">About</div>
@@ -254,12 +297,14 @@ export default function Landing() {
           thoughtful, expressive, and alive.
         </div>
       </GridLayout>
+      
       <GridLayout className="pt-64 pb-4">
         <div className="col-span-3 uppercase text-2xl">Works</div>
         <div className="col-span-3 col-start-10 flex justify-end uppercase text-2xl underline">
           <Link to="/about">See all</Link>
         </div>
       </GridLayout>
+      
       <GridLayout className="gap-y-32">
         {projects.slice(0, 6).map((project, index) => (
           <Work key={index} project={project} index={index} />

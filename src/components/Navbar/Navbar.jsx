@@ -1,11 +1,31 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GridLayout from "../../layouts/GridLayout/GridLayout";
 
 import logo from "../../assets/media/logo/logo_black.svg";
 
 export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // Check initial scroll position
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="w-full fixed top-0 py-4 font-600 uppercase bg-white">
+    <div 
+      className={`w-full fixed top-0 py-4 font-600 uppercase z-50 transition-all duration-300 ease-in-out ${
+        isScrolled ? 'bg-white' : 'bg-transparent'
+      }`}
+    >
       <GridLayout>
         <div className="col-span-3">JACK MARELLI</div>
         <div className="col-span-3 w-8 flex items-center">
