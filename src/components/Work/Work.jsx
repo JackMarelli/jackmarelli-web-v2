@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Work = ({ project, index }) => {
+  const navigate = useNavigate();
+
   // Helper function to determine if a file is a video
   const isVideo = (src) => {
     const videoExtensions = [".mp4", ".webm", ".ogg", ".mov", ".avi"];
@@ -21,7 +24,10 @@ const Work = ({ project, index }) => {
   };
 
   return (
-    <div className="col-span-4 flex flex-col gap-4 cursor-pointer">
+    <div
+      onClick={() => navigate(project.url)}
+      className="col-span-4 flex flex-col gap-4 cursor-pointer"
+    >
       {project.cover ? (
         <div className="w-full rounded overflow-hidden">
           {renderMedia(project.cover, project.title, "w-full object-contain")}

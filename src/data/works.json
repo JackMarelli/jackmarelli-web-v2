@@ -5,23 +5,27 @@
     "description": "Personal brand identity and visual system.",
     "cover": "/assets/media/jackmarelli/logo_spin.mp4",
     "expertises": ["Brand Identity"],
+    "when": "January 2024",
     "gallery": [
-      { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
+      { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": "full", "type": "image" }
     ],
-    "url": "/work/personal-brand"
+    "url": "/work/personal-brand",
+    "next": "/work/50-sfumature-di-pinot-noir"
   },
   {
     "title": "50 Sfumature di Pinot Noir",
-    "subtitle": "Logo Design",
+    "subtitle": "Shopping e eleganza del gusto",
     "description": "A cutting-edge platform blending interactivity and design.",
     "cover": "/assets/media/_50sfumaturedipinotnoir/square_colored.jpg",
-    "expertises": ["Logo Design"],
+    "expertises": ["Logo Design", "Visual Identity"],
+    "when": "February 2024",
     "gallery": [
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
-    ],
-    "url": "/work/50-sfumature-di-pinot-noir"
+      { "src": "/assets/media/_50sfumaturedipinotnoir/01.jpg", "cols": 6, "type": "image" },
+      { "src": "/assets/media/_50sfumaturedipinotnoir/01.jpg", "cols": 6, "type": "image" },
+      { "src": "/assets/media/_50sfumaturedipinotnoir/01.jpg", "cols": "full", "type": "image" }
+    ],  
+    "url": "/work/50-sfumature-di-pinot-noir",
+    "next": "/work/domu"
   },
   {
     "title": "Domu",
@@ -29,15 +33,17 @@
     "description": "Visual identity and interface design for residential project.",
     "cover": "/assets/media/domu/domuCover2.png",
     "expertises": ["Branding", "UI Design", "Frontend Dev"],
+    "when": "March 2024",
     "gallery": [
       { "src": "/assets/media/domu/domu1.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/domu/domu2.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/domu/domu3.png", "cols": 4, "type": "image" },
       { "src": "/assets/media/domu/domu4.png", "cols": 4, "type": "image" },
       { "src": "/assets/media/domu/domu5.png", "cols": 4, "type": "image" },
-      { "src": "/assets/media/domu/domu6.png", "cols": 12, "type": "image" }
+      { "src": "/assets/media/domu/domu6.png", "cols": "full", "type": "image" }
     ],
-    "url": "/work/domu"
+    "url": "/work/domu",
+    "next": "/work/made-in-bergamo"
   },
   {
     "title": "Made in Bergamo",
@@ -45,12 +51,14 @@
     "description": "A cutting-edge platform blending interactivity and design.",
     "cover": "/assets/media/madeinbergamo/03.jpg",
     "expertises": ["Website Creation"],
+    "when": "April 2024",
     "gallery": [
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": "full", "type": "image" }
     ],
-    "url": "/work/made-in-bergamo"
+    "url": "/work/made-in-bergamo",
+    "next": "/work/riflessioni-programmate"
   },
   {
     "title": "Riflessioni Programmate",
@@ -58,12 +66,14 @@
     "description": "A cutting-edge platform blending interactivity and design.",
     "cover": "/assets/media/riflessioniprogrammate/flyer.png",
     "expertises": ["Interactive Installation"],
+    "when": "May 2024",
     "gallery": [
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": "full", "type": "image" }
     ],
-    "url": "/work/riflessioni-programmate"
+    "url": "/work/riflessioni-programmate",
+    "next": "/work/misuraemme-mobili"
   },
   {
     "title": "MisuraEmme Mobili",
@@ -71,10 +81,12 @@
     "description": "Personal brand identity and visual system.",
     "cover": "/assets/media/misuraemme/misuraemme.mp4",
     "expertises": ["UX", "Front-end Dev"],
+    "when": "June 2024",
     "gallery": [
-      { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": 12, "type": "image" }
+      { "src": "/assets/media/jackmarelli/someimage.jpg", "cols": "full", "type": "image" }
     ],
-    "url": "/work/misuraemme-mobili"
+    "url": "/work/misuraemme-mobili",
+    "next": "/work/vev-clean-and-gardening"
   },
   {
     "title": "Vev Clean & Gardening",
@@ -82,11 +94,13 @@
     "description": "A cutting-edge platform blending interactivity and design.",
     "cover": "/assets/media/vev/vev_thumb.png",
     "expertises": ["Website Creation"],
+    "when": "July 2024",
     "gallery": [
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
       { "src": "/assets/media/vev/vev_thumb.png", "cols": 6, "type": "image" },
-      { "src": "/assets/media/vev/vev_thumb.png", "cols": 12, "type": "image" }
+      { "src": "/assets/media/vev/vev_thumb.png", "cols": "full", "type": "image" }
     ],
-    "url": "/work/vev-clean-and-gardening"
+    "url": "/work/vev-clean-and-gardening",
+    "next": "/work/personal-brand"
   }
 ]

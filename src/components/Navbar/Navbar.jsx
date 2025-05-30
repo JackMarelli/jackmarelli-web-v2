@@ -12,18 +12,18 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 0);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    
+    window.addEventListener("scroll", handleScroll);
+
     // Check initial scroll position
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div 
+    <div
       className={`w-full fixed top-0 py-4 font-600 uppercase z-50 transition-all duration-300 ease-in-out ${
-        isScrolled ? 'bg-white' : 'bg-transparent'
+        isScrolled ? "bg-white" : "bg-transparent"
       }`}
     >
       <GridLayout>
@@ -33,7 +33,7 @@ export default function Navbar() {
         </div>
         <div className="col-span-3 flex gap-6">
           <div>
-            <Link to="/works">
+            <Link to="/work">
               Works <sup>13</sup>
             </Link>
           </div>
