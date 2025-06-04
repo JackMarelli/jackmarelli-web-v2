@@ -13,18 +13,18 @@
 }
 
 @font-face {
-  font-family: "Ancizar";
-  src: url("../src/assets/fonts/AncizarSerif-VariableFont_wght.ttf")
+  font-family: "Zodiak";
+  src: url("../src/assets/fonts/Zodiak-Variable.ttf")
     format("truetype");
-  font-weight: 100 900;
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Ancizar";
-  src: url("../src/assets/fonts/AncizarSerif-Italic-VariableFont_wght.ttf")
+  font-family: "Zodiak";
+  src: url("../src/assets/fonts/Zodiak-VariableItalic.ttf")
     format("truetype");
-  font-weight: 100 900;
+  font-weight: 200;
   font-style: italic;
 }
 
@@ -45,33 +45,17 @@
 }
 
 @font-face {
-  font-family: "Yrsa";
-  src: url("../src/assets/fonts/Yrsa-VariableFont_wght.ttf")
+  font-family: "Erode";
+  src: url("../src/assets/fonts/Erode-Variable.ttf")
     format("truetype");
-  font-weight: 100 900;
+  font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Yrsa";
-  src: url("../src/assets/fonts/Yrsa-Italic-VariableFont_wght.ttf")
+  font-family: "Erode";
+  src: url("../src/assets/fonts/Erode-VariableItalic.ttf")
     format("truetype");
-  font-weight: 100 900;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Fraunces";
-  src: url("../src/assets/fonts/Fraunces-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Fraunces";
-  src: url("../src/assets/fonts/Fraunces-Italic-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900;
+  font-weight: 100;
   font-style: italic;
 }

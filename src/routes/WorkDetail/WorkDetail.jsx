@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import BaseLayout from "../../layouts/BaseLayout/BaseLayout";
 import GridLayout from "../../layouts/GridLayout/GridLayout";
@@ -8,30 +8,12 @@ import works from "../../data/works.json";
 
 export default function WorkDetail() {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  });
-
-  useEffect(() => {
-    // Find project by URL slug
     const foundProject = works.find((work) => work.url === `/work/${slug}`);
     setProject(foundProject);
-    setLoading(false);
   }, [slug]);
-
-  if (loading) {
-    return (
-      <BaseLayout>
-        <GridLayout className="pt-8">
-          <div className="col-span-full text-center">Loading...</div>
-        </GridLayout>
-      </BaseLayout>
-    );
-  }
 
   if (!project) {
     return (
@@ -48,17 +30,17 @@ export default function WorkDetail() {
     );
   }
 
+  const nextProject = works.find((work) => work.url === project.next);
+
   return (
     <BaseLayout>
       {/* Project Metadata */}
       <GridLayout className="pt-48 pb-8">
-        <div className="col-span-5 h-64">
+        <div className="col-span-2 text-xl mt-20">{project.when}</div>
+        <div className="col-span-5 col-start-7 h-64 mt-20 mb-16">
           <h1 className="text-6xl font-serif mb-4 leading-[80%]">
-            {project.title}
+            {project.title}{project.subtitle && ` - ${project.subtitle}`}
           </h1>
-        </div>
-        <div className="col-span-5 col-start-7">
-          {project.subtitle && <h2 className="text-6xl mb-8 font-serif">{project.subtitle}</h2>}
         </div>
         <div className="col-span-3 col-start-7">
           <div className="flex flex-col">
@@ -73,78 +55,132 @@ export default function WorkDetail() {
       </GridLayout>
 
       {/* Project Gallery */}
-      <GridLayout className="gap-y-8 pb-32">
-        {project.gallery.map((item, index) => {
-          const colSpanClass = `col-span-${item.cols}`;
-
-          return (
-            <div key={index} className={colSpanClass}>
-              {item.type === "image" ? (
-                <img
-                  src={item.src}
-                  alt={`${project.title} - ${index + 1}`}
-                  className="w-full h-auto object-cover rounded"
-                  loading="lazy"
-                />
-              ) : item.type === "video" ? (
-                <video
-                  src={item.src}
-                  controls
-                  className="w-full h-auto object-cover rounded"
-                  poster={item.poster}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              ) : null}
-            </div>
-          );
-        })}
-      </GridLayout>
+      <GalleryRenderer project={project} />
 
       {/* Next Project Section */}
-      <GridLayout className="pt-32 pb-32">
-        <div className="col-span-full mb-8">
-          <h2 className=" uppercase">Next Project</h2>
-        </div>
-        {(() => {
-          // Find next project using the "next" attribute
-          const nextProject = works.find((work) => work.url === project.next);
-
-          if (!nextProject) return null;
-
-          return (
-            <GridLayout
-              onClick={() => {
-                navigate(nextProject.url);
-              }}
-            >
-              <div className="col-span-6">
-                <h3 className="text-6xl font-serif">{nextProject.title}</h3>
+      {nextProject && (
+        <Link to={nextProject.url}>
+          <GridLayout className="pt-32 pb-32 cursor-pointer">
+            <div className="col-span-6 mb-8">
+              <p className="uppercase text-xl">Next Project</p>
+            </div>
+            <div className="col-span-5 col-start-7 font-serif text-5xl">
+              {nextProject.title}
+            </div>
+            <div className="col-span-6 col-start-7">
+              <div className="overflow-hidden rounded">
+                {nextProject.cover.endsWith(".mp4") ? (
+                  <video
+                    src={nextProject.cover}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={nextProject.cover}
+                    alt={nextProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
-              <div className="col-span-6">
-                <div className="overflow-hidden rounded">
-                  {nextProject.cover.endsWith(".mp4") ? (
-                    <video
-                      src={nextProject.cover}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={nextProject.cover}
-                      alt={nextProject.title}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              </div>
-            </GridLayout>
-          );
-        })()}
-      </GridLayout>
+            </div>
+          </GridLayout>
+        </Link>
+      )}
     </BaseLayout>
   );
+}
+
+// --- Smart GalleryRenderer ---
+
+function GalleryRenderer({ project }) {
+  const gallery = project.gallery;
+
+  // Group items into fulls and 6-cols blocks
+  const blocks = [];
+  let sixColsBuffer = [];
+
+  gallery.forEach((item) => {
+    if (item.cols === "full") {
+      if (sixColsBuffer.length) {
+        blocks.push({ type: "sixCols", items: [...sixColsBuffer] });
+        sixColsBuffer = [];
+      }
+      blocks.push({ type: "full", item });
+    } else {
+      sixColsBuffer.push(item);
+    }
+  });
+
+  if (sixColsBuffer.length) {
+    blocks.push({ type: "sixCols", items: [...sixColsBuffer] });
+  }
+
+  let descriptionInserted = false;
+
+  return (
+    <GridLayout className="gap-y-8 pb-32">
+      {blocks.map((block, blockIndex) => {
+        if (block.type === "full") {
+          return (
+            <>
+              <div key={blockIndex} className="col-span-full">
+                <MediaRenderer item={block.item} title={project.title} index={blockIndex} />
+              </div>
+              {!descriptionInserted && (
+                <div key={`desc-${blockIndex}`} className="col-span-6 col-start-7 mb-64">
+                  <p className="text-xl leading-relaxed">{project.description}</p>
+                </div>
+              )}
+              {descriptionInserted = true}
+            </>
+          );
+        }
+
+        return (
+          <div key={blockIndex} className="col-span-full flex gap-8">
+            {block.items.map((item, index) => (
+              <div key={index} className="flex-1">
+                <MediaRenderer item={item} title={project.title} index={index} />
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </GridLayout>
+  );
+}
+
+function MediaRenderer({ item, title, index }) {
+  if (item.type === "image") {
+    const isFull = item.cols === "full";
+    return (
+      <img
+        src={item.src}
+        alt={`${title} - ${index + 1}`}
+        className={`w-full ${isFull ? "h-auto object-contain" : "h-full object-cover"} rounded`}
+        loading="lazy"
+      />
+    );
+  } else if (item.type === "video") {
+    return (
+      <video
+        src={item.src}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        loop
+        className="w-full h-full object-cover rounded"
+        poster={item.poster}
+      >
+        Your browser does not support the video tag.
+      </video>
+    );
+  } else {
+    return null;
+  }
 }

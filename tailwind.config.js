@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        serif: ['Yrsa', 'serif'],
+        serif: ['Erode', 'serif'],
       },
       keyframes: {
         blink: {
