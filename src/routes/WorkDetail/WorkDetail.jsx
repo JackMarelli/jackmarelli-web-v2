@@ -20,8 +20,8 @@ export default function WorkDetail() {
       <BaseLayout>
         <GridLayout className="pt-8">
           <div className="col-span-full text-center">
-            <h1 className="text-4xl mb-4">Project Not Found</h1>
-            <Link to="/work" className="text-xl underline">
+            <h1 className="text-2xl md:text-4xl mb-4">Project Not Found</h1>
+            <Link to="/work" className="text-base md:text-xl underline">
               Back to Works
             </Link>
           </div>
@@ -35,23 +35,26 @@ export default function WorkDetail() {
   return (
     <BaseLayout>
       {/* Project Metadata */}
-      <GridLayout className="pt-48 pb-8">
-        <div className="col-span-2 text-xl mt-20">{project.when}</div>
-        <div className="col-span-5 col-start-7 h-64 mt-20 mb-16">
-          <h1 className="text-6xl font-serif mb-4 leading-[80%]">
-            {project.title}{project.subtitle && ` - ${project.subtitle}`}
+      <GridLayout className="gap-y-0 pt-16 pb-4 md:pt-48 md:pb-8">
+        <div className="md:order-none col-span-full text-base md:col-span-2 md:text-xl mt-32 md:mb-0 md:mt-20">
+          {project.when}
+        </div>
+        <div className="order-1 col-span-full md:col-span-5 md:col-start-7 md:h-64 mb-24 md:mt-20 md:mb-16">
+          <h1 className="text-4xl md:text-6xl font-serif leading-[90%] md:leading-[80%]">
+            {project.title}
+            {project.subtitle && ` - ${project.subtitle}`}
           </h1>
         </div>
-        <div className="col-span-3 col-start-7">
-          <div className="flex flex-col">
+        <div className="order-2 col-span-full md:col-span-3 md:col-start-7 md:mt-0">
+          <div className="flex flex-col flex-wrap">
             {project.expertises.map((expertise, index) => (
-              <span key={index} className="text-xl">
+              <span key={index} className="text-base md:text-xl">
                 {expertise}
               </span>
             ))}
           </div>
         </div>
-        <div className="col-span-3"></div>
+        <div className="col-span-3 hidden md:block"></div>
       </GridLayout>
 
       {/* Project Gallery */}
@@ -60,11 +63,11 @@ export default function WorkDetail() {
       {/* Next Project Section */}
       {nextProject && (
         <Link to={nextProject.url}>
-          <GridLayout className="pt-32 pb-32 cursor-pointer">
-            <div className="col-span-6 mb-8">
-              <p className="uppercase text-xl">Next Project</p>
+          <GridLayout className="pt-16 pb-16 md:pt-32 md:pb-32 cursor-pointer gap-y-0 md:gap-y-4">
+            <div className="mb-4 col-span-6 md:mb-8">
+              <p className="uppercase text-base md:text-xl">Next Project</p>
             </div>
-            <div className="col-span-5 col-start-7 font-serif text-5xl">
+            <div className="col-span-5 col-start-7 font-serif text-3xl md:text-5xl leading-[100%]">
               {nextProject.title}
             </div>
             <div className="col-span-6 col-start-7">
@@ -76,13 +79,13 @@ export default function WorkDetail() {
                     loop
                     muted
                     playsInline
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-contain rounded md:h-full md:object-cover"
                   />
                 ) : (
                   <img
                     src={nextProject.cover}
                     alt={nextProject.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-contain rounded md:h-full md:object-cover"
                   />
                 )}
               </div>
@@ -122,29 +125,60 @@ function GalleryRenderer({ project }) {
   let descriptionInserted = false;
 
   return (
-    <GridLayout className="gap-y-8 pb-32">
+    <GridLayout className="gap-y-8 pb-16 md:pb-32">
       {blocks.map((block, blockIndex) => {
         if (block.type === "full") {
           return (
             <>
               <div key={blockIndex} className="col-span-full">
-                <MediaRenderer item={block.item} title={project.title} index={blockIndex} />
+                <MediaRenderer
+                  item={block.item}
+                  title={project.title}
+                  index={blockIndex}
+                />
               </div>
-              {!descriptionInserted && (
-                <div key={`desc-${blockIndex}`} className="col-span-6 col-start-7 mb-64">
-                  <p className="text-xl leading-relaxed">{project.description}</p>
-                </div>
-              )}
-              {descriptionInserted = true}
+              {!descriptionInserted &&
+                (() => {
+                  const words = project.description.split(/\s+/);
+                  const firstPart = words.slice(0, 100).join(" ");
+                  const secondPart =
+                    words.length > 100 ? words.slice(100).join(" ") : null;
+                  return (
+                    <>
+                      <div
+                        key={`desc-${blockIndex}-first`}
+                        className="col-span-full text-base md:col-span-3 md:col-start-7 md:mb-8"
+                      >
+                        <p className="leading-relaxed">{firstPart}</p>
+                      </div>
+                      {secondPart && (
+                        <div
+                          key={`desc-${blockIndex}-second`}
+                          className="col-span-full text-base md:col-span-3 md:col-start-10 md:mb-64"
+                        >
+                          <p className="leading-relaxed">{secondPart}</p>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+              {(descriptionInserted = true)}
             </>
           );
         }
 
         return (
-          <div key={blockIndex} className="col-span-full flex gap-8">
+          <div
+            key={blockIndex}
+            className="col-span-full flex flex-col gap-4 md:flex-row md:gap-8"
+          >
             {block.items.map((item, index) => (
               <div key={index} className="flex-1">
-                <MediaRenderer item={item} title={project.title} index={index} />
+                <MediaRenderer
+                  item={item}
+                  title={project.title}
+                  index={index}
+                />
               </div>
             ))}
           </div>
@@ -156,12 +190,11 @@ function GalleryRenderer({ project }) {
 
 function MediaRenderer({ item, title, index }) {
   if (item.type === "image") {
-    const isFull = item.cols === "full";
     return (
       <img
         src={item.src}
         alt={`${title} - ${index + 1}`}
-        className={`w-full ${isFull ? "h-auto object-contain" : "h-full object-cover"} rounded`}
+        className="w-full h-auto object-contain rounded md:h-full md:object-cover"
         loading="lazy"
       />
     );
@@ -174,7 +207,7 @@ function MediaRenderer({ item, title, index }) {
         playsInline
         preload="auto"
         loop
-        className="w-full h-full object-cover rounded"
+        className="w-full h-auto object-contain rounded md:h-full md:object-cover"
         poster={item.poster}
       >
         Your browser does not support the video tag.

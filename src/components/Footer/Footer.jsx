@@ -43,11 +43,11 @@ export default function Footer({ intensity = 100 }) {
   }, [intensity]);
 
   return (
-    <div className="h-screen flex items-end overflow-hidden">
+    <div className="h-[30vh] md:h-screen flex items-end overflow-hidden">
       <GridLayout>
         <div
           ref={containerRef}
-          className="col-span-full h-fit leading-none uppercase flex gap-1 text-[29.8vw] relative"
+          className="col-span-full h-fit leading-none uppercase flex gap-1 text-[27.2vw] md:text-[29.8vw] relative"
         >
           {text.split("").map((char, i) => (
             <motion.div
