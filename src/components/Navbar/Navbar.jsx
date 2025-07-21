@@ -32,7 +32,12 @@ export default function Navbar() {
           <Link to="/">JACK MARELLI</Link>
         </div>
         <div className="col-span-3 w-8 flex items-center">
-          <img onClick={() => navigate("/")} src={logo} alt="Logo" className="cursor-pointer"/>
+          <img
+            onClick={() => navigate("/")}
+            src={logo}
+            alt="Logo"
+            className="cursor-pointer"
+          />
         </div>
         <div className="col-span-3 flex gap-6">
           <div>
@@ -45,7 +50,7 @@ export default function Navbar() {
             <Link to="/about">About</Link>
           </div>
           <div>
-            <Link to="/playground">Playground</Link>
+            <Link to="/play">Playhouse</Link>
           </div>
         </div>
         <div className="col-span-3 flex justify-end">

@@ -1,0 +1,34 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nyan Square</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="arena-container">
+        <canvas id="arena" width="600" height="600"></canvas>
+      </div>
+      <br />
+      <p>Reload the page if:</p>
+      <ul>
+        <li>You want to change colors</li>
+        <li>Your square has only one color</li>
+        <li>You dont see any colored square</li>
+      </ul>
+      <br />
+      <input
+        type="range"
+        id="blurSlider"
+        class="custom-slider"
+        mix="1"
+        max="50"
+        value="5"
+      />
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>

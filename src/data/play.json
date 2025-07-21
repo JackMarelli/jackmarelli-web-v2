@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Detective Cursor",
+    "desc": "Your cursor investigates the screen and reacts to elements.",
+    "cover": "/play/detectivecursor/cover.png",
+    "uploadDate": "2025-07-21",
+    "path": "detectivecursor"
+  },
+  {
+    "title": "Nyan Square",
+    "desc": "A flying square with a rainbow trail inspired by Nyan Cat.",
+    "cover": "/play/nyansquare/cover.png",
+    "uploadDate": "2025-07-21",
+    "path": "nyansquare"
+  },
+  {
+    "title": "Pacmouse",
+    "desc": "Move your cursor to make a little Pacman chase your pointer.",
+    "cover": "/play/pacmouse/cover.png",
+    "uploadDate": "2025-07-21",
+    "path": "pacmouse"
+  },
+  {
+    "title": "Text Rounder",
+    "desc": "A text animation experiment that bends letters in a circle.",
+    "cover": "/play/textrounder/cover.png",
+    "uploadDate": "2025-07-21",
+    "path": "textrounder"
+  }
+]
